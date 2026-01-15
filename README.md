@@ -38,3 +38,34 @@ Edita
 - Un .zip con este repositorio o un link a un repositorio online. Puedes hacer un fork en github si lo prefieres. ¡No borres la carpeta `.git`!
 - Un archivo `README.md` (borra/edita este) en el que expliques qué clases has creado, qué retos y problemas has tenido y las funcionalidades finales conseguidas.
 - La base de datos exportada en formato tanto `.sql` (para MySQL) y el archivo `.db` (o como hayas decidido llamar a la base de datos SQLite)
+
+## Problemas (y soluciones) comunes
+¡Paciencia! Aquí iré subiendo los inconvenientes más importantes que encuentro.
+
+- Para SQLite necesitamos la dependencia [Hibernate Community dialects](https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-community-dialects). La versión tiene que coincidir con tu versión de Hibernate!. Además, en tu unidad de persistencia deberías incluir, entre otras, las siguientes _propierties_:
+```xml
+<property name="hibernate.connection.driver_class" value="org.sqlite.JDBC" />
+<property name="hibernate.dialect" value="org.hibernate.community.dialect.SQLiteDialect"/>
+
+```
+Además, la url de SQLite tiene una estructura del tipo `jdbc:sqlite:universe.db`, siendo `universe.db` el fichero que almacenará la base de datos.
+
+- Deberías borrar la generación de IDs cuanto antes. Este fragmento de código
+```Java
+		//TODO: borrar
+        for (SolarSystem ss : solarSystems)
+        {
+            System.out.println("Loaded " + ss.getPlanets().size() + " planets " + " for " + ss.getName());
+
+            List<Planet> planets = ss.getPlanets();
+            for (int i = 0; i < planets.size(); i++)
+            {
+                planets.get(i).setId(i+1); // Id starts by 1
+            }
+        }
+```
+crea IDs repetidos para planetas de distintos sistemas solares. Esto te va a dar fallo al guardar en hibernate. Incluso te recomiendo borrar los métodos `setId()` para asegurarse que no asignamos los ids nosotros.
+
+- Borra el archivo module-info.java! Este archivo **restringe** la comunicación entre dependencias, cosa que en nuestro caso nos dará más problemas que ventajas.
+
+
