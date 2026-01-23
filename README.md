@@ -33,14 +33,19 @@ Por si necesitas ir paso a paso:
   - El `UniGraoVerseController` debe llamar a estas clases. Revisa todos los métodos que tiene, muchos de ellos deberán ser modificados.
   - En `PlayViewController` deberás editar el método `setupDeleteButton`. Puedes editar más métodos si lo crees conveniente, o si quieres añadir funcionalidades de manera opcional.
   - En `MainViewController` edita dos líneas para seleccionar la unidad de persistencia adecuada.
-Edita 
+
 ## Entregar
 - Un .zip con este repositorio o un link a un repositorio online. Puedes hacer un fork en github si lo prefieres. ¡No borres la carpeta `.git`!
 - Un archivo `README.md` (borra/edita este) en el que expliques qué clases has creado, qué retos y problemas has tenido y las funcionalidades finales conseguidas.
 - La base de datos exportada en formato tanto `.sql` (para MySQL) y el archivo `.db` (o como hayas decidido llamar a la base de datos SQLite)
 
+
 ## Problemas (y soluciones) comunes
 ¡Paciencia! Aquí iré subiendo los inconvenientes más importantes que encuentro.
+
+- En la clase `SolarSystem` hay un atributo (`planets`) que es una lista de instancias de la clase `Planet`. ¿Como se guarda esta referencia en ORM? No es algo sencillo, así que tendrás que leer el archivo [Re](./RelacionesEntreEntidades.md) para aprender como hacer esto en JPA.
+
+- Para las operaciones de borrado, actualizado y guardado, es recomendable usar __transacciones__ aunque se trate de un único elemento.
 
 - Para SQLite necesitamos la dependencia [Hibernate Community dialects](https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-community-dialects). La versión tiene que coincidir con tu versión de Hibernate!. Además, en tu unidad de persistencia deberías incluir, entre otras, las siguientes _propierties_:
 ```xml
@@ -68,4 +73,7 @@ crea IDs repetidos para planetas de distintos sistemas solares. Esto te va a dar
 
 - Borra el archivo module-info.java! Este archivo **restringe** la comunicación entre dependencias, cosa que en nuestro caso nos dará más problemas que ventajas.
 
+- ¿No se te refresca correctamente la tabla al añadir/borrar un planeta o sistema solar? Puedes probar lo siguiente:
+  - Llamar a `loadPlanetsTable()` o `loadSolarSystemTable()` (según corresponda) en `PlayViewController`, seguido de `mainTable.refresh()`
+  - Actualizar los datos tras una actualización/borrado. Te recomiendo tener un método `loadAllData()` para iniciar el programa, que también puedas llamar para forzar el 'refrescado' de datos desde la BD.
 
