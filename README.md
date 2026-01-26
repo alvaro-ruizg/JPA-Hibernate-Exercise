@@ -43,7 +43,7 @@ Por si necesitas ir paso a paso:
 ## Problemas (y soluciones) comunes
 ¡Paciencia! Aquí iré subiendo los inconvenientes más importantes que encuentro.
 
-- En la clase `SolarSystem` hay un atributo (`planets`) que es una lista de instancias de la clase `Planet`. ¿Como se guarda esta referencia en ORM? No es algo sencillo, así que tendrás que leer el archivo [Re](./RelacionesEntreEntidades.md) para aprender como hacer esto en JPA.
+- En la clase `SolarSystem` hay un atributo (`planets`) que es una lista de instancias de la clase `Planet`. ¿Como se guarda esta referencia en ORM? No es algo sencillo, así que tendrás que leer el archivo [Relaciones Entre Entidades](./RelacionesEntreEntidades.md) para aprender como hacer esto en JPA.
 
 - Para las operaciones de borrado, actualizado y guardado, es recomendable usar __transacciones__ aunque se trate de un único elemento.
 
